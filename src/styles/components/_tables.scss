@@ -1,0 +1,56 @@
+@use "../variables" as *;
+@use "../mixins" as *;
+
+/* ==============================================
+   TABLAS DEL SISTEMA
+   Compatible con legacy gc-table
+   ============================================== */
+
+table {
+    border-collapse: collapse;
+    border-color: rgb(229, 231, 235);
+}
+
+.border {
+    border-left: none;
+    border: 1px solid #e5e7eb;
+}
+
+.titleColumn {
+    color: #8a9099;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 20px;
+    text-transform: uppercase;
+    white-space: normal;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    position: relative;
+
+    span {
+        white-space: normal !important;
+        word-wrap: break-word !important;
+        overflow-wrap: break-word !important;
+    }
+
+    &[data-action-column] {
+        &::after {
+            content: "";
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            background-color: #e5e7eb;
+            pointer-events: none;
+            z-index: 10;
+        }
+    }
+}
+
+.textCell {
+    color: #595f69;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 20px;
+}
