@@ -46,7 +46,7 @@ type Component = {
   datasource: Datasource;
 }
 
-export type BoardField = {
+export type ColumnField = {
   key?: string;
   name?: string;
   label?: string;
@@ -61,10 +61,21 @@ export type BoardField = {
   order?: number;
 };
 
-export interface BoardSettings extends Component {
-  fields?: BoardField[];
+export type ActionColumnPosition = "left" | "right";
+
+export interface Actions {
+  position?: ActionColumnPosition;
+  pagination?: boolean;
+}
+
+export interface TableSettings extends Component {
+  fields?: ColumnField[];
+  actions?: Actions;
+  rowsPerPage?: number;
+}
+
+export interface BoardSettings extends TableSettings {
   api?: Dictionary<any>;
   dataAccess: string;
   moduleId: string;
-  rowsPerPage?: number;
 };
