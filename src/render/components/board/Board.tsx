@@ -54,18 +54,27 @@ export function Board({ settings }: { settings: BoardSettings }) {
     }
 
     return (
-        <div>
-            <h2>{settings.name ?? "Board"}</h2>
-            <Table
-                settings={settings}
-                rows={data}
-                loading={loading}
-                totalCount={totalCount}
-                currentPage={currentPage}
-                rowsPerPage={rowsPerPage}
-                onPageChange={handlePageChange}
-                onRowsPerPageChange={handleRowsPerPageChange}
-            />
+        <div className="w-full bg-white rounded-xl shadow-card overflow-hidden">
+            {/* Header del Board */}
+            <div className="px-4 sm:px-6 lg:px-8 py-4 border-b border-gray-100">
+                <h2 className="text-lg sm:text-xl lg:text-2xl font-semibold text-gray-800">
+                    {settings.name ?? "Board"}
+                </h2>
+            </div>
+
+            {/* Contenido del Board */}
+            <div className="p-2 sm:p-4 lg:p-6">
+                <Table
+                    settings={settings}
+                    rows={data}
+                    loading={loading}
+                    totalCount={totalCount}
+                    currentPage={currentPage}
+                    rowsPerPage={rowsPerPage}
+                    onPageChange={handlePageChange}
+                    onRowsPerPageChange={handleRowsPerPageChange}
+                />
+            </div>
         </div>
     );
 }

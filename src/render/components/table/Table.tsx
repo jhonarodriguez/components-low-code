@@ -100,57 +100,64 @@ export const Table = ({
 
     return (
         <>
-            <table className="w-full">
-                <thead>
-                    <tr className="text-md font-semibold tracking-wide text-gray-500 bg-white uppercase text-center">
-                        {showActionsColumn &&
-                            actionColumnPosition === "left" && (
-                                <th className="select-none px-8 py-6 border titleColumn">
-                                    ACCIONES
-                                </th>
-                            )}
-
-                        {columns.map((col, i) => (
-                            <th
-                                key={col.key}
-                                className="select-none px-8 py-6 border titleColumn relative group"
-                            >
-                                {col.component?.name || col.name}
-                            </th>
-                        ))}
-
-                        {showActionsColumn &&
-                            actionColumnPosition === "right" && (
-                                <th className="select-none px-8 py-6 border titleColumn">
-                                    ACCIONES
-                                </th>
-                            )}
-                    </tr>
-                </thead>
-                <tbody className="text-center">
-                    {rows.map((row, i) => (
-                        <tr key={i}>
+            {/* Contenedor de tabla con scroll horizontal para móviles */}
+            <div className="table-container table-cards-mode">
+                <table className="w-full">
+                    <thead>
+                        <tr className="text-md font-semibold tracking-wide text-gray-500 bg-white uppercase text-center">
                             {showActionsColumn &&
                                 actionColumnPosition === "left" && (
-                                    <td className="px-4 py-3 text-ms textCell border" />
+                                    <th className="select-none px-4 sm:px-6 lg:px-8 py-4 sm:py-5 lg:py-6 border titleColumn whitespace-nowrap">
+                                        <span className="hidden sm:inline">ACCIONES</span>
+                                        <span className="sm:hidden">ACT</span>
+                                    </th>
                                 )}
+
                             {columns.map((col, i) => (
-                                <td
+                                <th
                                     key={col.key}
-                                    className="px-4 py-3 text-ms textCell border cursor-pointer"
+                                    className="select-none px-4 sm:px-6 lg:px-8 py-4 sm:py-5 lg:py-6 border titleColumn relative group whitespace-nowrap"
+                                    data-label={col.component?.name || col.name}
                                 >
-                                    <span>{renderCell(row, col)}</span>
-                                </td>
+                                    <span>{col.component?.name || col.name}</span>
+                                </th>
                             ))}
 
                             {showActionsColumn &&
                                 actionColumnPosition === "right" && (
-                                    <td className="px-4 py-3 text-ms textCell border" />
+                                    <th className="select-none px-4 sm:px-6 lg:px-8 py-4 sm:py-5 lg:py-6 border titleColumn whitespace-nowrap">
+                                        <span className="hidden sm:inline">ACCIONES</span>
+                                        <span className="sm:hidden">ACT</span>
+                                    </th>
                                 )}
                         </tr>
-                    ))}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody className="text-center">
+                        {rows.map((row, rowIdx) => (
+                            <tr key={rowIdx} className="hover:bg-gray-50 transition-colors">
+                                {showActionsColumn &&
+                                    actionColumnPosition === "left" && (
+                                        <td className="px-3 sm:px-4 lg:px-4 py-2 sm:py-3 text-ms textCell border" />
+                                    )}
+                                {columns.map((col, colIdx) => (
+                                    <td
+                                        key={col.key}
+                                        className="px-3 sm:px-4 lg:px-4 py-2 sm:py-3 text-ms textCell border cursor-pointer"
+                                        data-label={col.component?.name || col.name}
+                                    >
+                                        <span>{renderCell(row, col)}</span>
+                                    </td>
+                                ))}
+
+                                {showActionsColumn &&
+                                    actionColumnPosition === "right" && (
+                                        <td className="px-3 sm:px-4 lg:px-4 py-2 sm:py-3 text-ms textCell border" />
+                                    )}
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
 
             <div className="left-0 flex items-center justify-between border-gray-200 bg-white py-3 mt-4">
                 <div className="flex flex-1 justify-between w-full sm:hidden">
@@ -222,7 +229,9 @@ export const Table = ({
                                         currentPage === 1 ? "text-[#8A9099]" : "text-[#304FFD] bg-[#e4e7f9]"
                                     }`}
                                 >
-                                    «
+                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
+                                    </svg>
                                 </button>
 
                                 <button
@@ -233,7 +242,9 @@ export const Table = ({
                                         currentPage === 1 ? "text-[#8A9099]" : "text-[#304FFD] bg-[#e4e7f9]"
                                     }`}
                                 >
-                                    ‹
+                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                                    </svg>
                                 </button>
 
                                 {pageItems.map((page, idx) =>
@@ -268,7 +279,9 @@ export const Table = ({
                                             : "text-[#304FFD] bg-[#e4e7f9]"
                                     }`}
                                 >
-                                    ›
+                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                                    </svg>
                                 </button>
 
                                 <button
@@ -281,7 +294,9 @@ export const Table = ({
                                             : "text-[#304FFD] bg-[#e4e7f9]"
                                     }`}
                                 >
-                                    »
+                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 5l7 7-7 7M5 5l7 7-7 7" />
+                                    </svg>
                                 </button>
                             </nav>
                         </div>

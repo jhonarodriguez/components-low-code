@@ -2,13 +2,38 @@
 @use "../mixins" as *;
 
 /* ==============================================
-   TABLAS DEL SISTEMA
+   TABLAS DEL SISTEMA - RESPONSIVE
    Compatible con legacy gc-table
    ============================================== */
 
+// Contenedor principal de la tabla con scroll horizontal
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: #c1c1c1 transparent;
+
+    &::-webkit-scrollbar {
+        height: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: #c1c1c1;
+        border-radius: 3px;
+    }
+}
+
+// Tabla base
 table {
     border-collapse: collapse;
     border-color: rgb(229, 231, 235);
+    width: 100%;
+    min-width: 600px; // Ancho mínimo para forzar scroll en móviles si es necesario
 }
 
 .border {
@@ -16,6 +41,7 @@ table {
     border: 1px solid #e5e7eb;
 }
 
+// Columnas de título responsive
 .titleColumn {
     color: #8a9099;
     font-size: 16px;
@@ -48,9 +74,174 @@ table {
     }
 }
 
+// Celda de texto responsive
 .textCell {
     color: #595f69;
     font-size: 16px;
     font-weight: 400;
     line-height: 20px;
+}
+
+/* ==============================================
+   MEDIA QUERIES - RESPONSIVE
+   ============================================== */
+
+// Tablets y móviles grandes (hasta 1024px)
+@media (max-width: 1024px) {
+    .titleColumn {
+        font-size: 14px;
+        padding: 1rem 1.5rem;
+    }
+
+    .textCell {
+        font-size: 14px;
+        padding: 0.75rem 1rem;
+    }
+
+    table {
+        min-width: 500px;
+    }
+}
+
+// Móviles grandes (hasta 768px)
+@media (max-width: 768px) {
+    .titleColumn {
+        font-size: 13px;
+        padding: 0.75rem 1rem;
+        font-weight: 600;
+
+        span {
+            font-size: 13px;
+        }
+    }
+
+    .textCell {
+        font-size: 13px;
+        padding: 0.5rem 0.75rem;
+    }
+
+    table {
+        min-width: 400px;
+    }
+}
+
+// Móviles pequeños (hasta 640px)
+@media (max-width: 640px) {
+    .table-container {
+        margin: 0 -1rem;
+        padding: 0 1rem;
+        width: calc(100% + 2rem);
+    }
+
+    .titleColumn {
+        font-size: 12px;
+        padding: 0.5rem 0.75rem;
+        line-height: 1.2;
+
+        span {
+            font-size: 12px;
+        }
+    }
+
+    .textCell {
+        font-size: 12px;
+        padding: 0.5rem;
+        line-height: 1.3;
+
+        span {
+            font-size: 12px;
+        }
+    }
+
+    table {
+        min-width: 350px;
+    }
+
+    .border {
+        border-width: 0.5px;
+    }
+}
+
+// Móviles muy pequeños (hasta 375px)
+@media (max-width: 375px) {
+    .titleColumn {
+        font-size: 11px;
+        padding: 0.375rem 0.5rem;
+
+        span {
+            font-size: 11px;
+        }
+    }
+
+    .textCell {
+        font-size: 11px;
+        padding: 0.375rem 0.5rem;
+
+        span {
+            font-size: 11px;
+        }
+    }
+
+    table {
+        min-width: 300px;
+    }
+}
+
+/* ==============================================
+   ESTILOS PARA TABLA COMO TARJETAS EN MÓVILES
+   (Alternativa visual para tablas pequeñas)
+   ============================================== */
+
+@media (max-width: 480px) {
+    // Opción: Tabla como lista de tarjetas
+    // Descomentar si se quiere usar este estilo en lugar de tabla horizontal
+    
+    .table-cards-mode {
+        table {
+            display: block;
+            min-width: auto;
+            border: none;
+            background: transparent;
+        }
+
+        thead {
+            display: none;
+        }
+
+        tbody {
+            display: block;
+        }
+
+        tbody tr {
+            display: block;
+            margin-bottom: 1rem;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 1rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        tbody td {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border: none;
+            border-bottom: 1px solid #f3f4f6;
+
+            &:last-child {
+                border-bottom: none;
+            }
+
+            &::before {
+                content: attr(data-label);
+                font-weight: 600;
+                color: #8a9099;
+                font-size: 11px;
+                text-transform: uppercase;
+                margin-right: 1rem;
+            }
+        }
+    }
+    
 }
