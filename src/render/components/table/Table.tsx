@@ -4,6 +4,7 @@ import {
     ColumnField,
     TableSettings,
 } from "../../../core/types";
+import { Icon } from "../ui/icons";
 
 import "../../../styles/components/_tables.scss";
 
@@ -45,7 +46,8 @@ function buildPaginationItems(
     let endPage = Math.min(totalPages - 1, currentPage + 2);
 
     if (currentPage === 1 || endPage < 5) endPage = 5;
-    if (currentPage === totalPages || startPage > totalPages - 4) startPage = totalPages - 4;
+    if (currentPage === totalPages || startPage > totalPages - 4)
+        startPage = totalPages - 4;
 
     if (startPage > 2) pages.push("...");
 
@@ -85,7 +87,9 @@ export const Table = ({
     const hasRows = safeTotalCount > 0;
 
     const startIndex = hasRows ? (currentPage - 1) * rowsPerPage + 1 : 0;
-    const endIndex = hasRows ? Math.min(currentPage * rowsPerPage, safeTotalCount) : 0;
+    const endIndex = hasRows
+        ? Math.min(currentPage * rowsPerPage, safeTotalCount)
+        : 0;
 
     const pageItems = useMemo(
         () => buildPaginationItems(totalPages, currentPage, 5),
@@ -108,7 +112,9 @@ export const Table = ({
                             {showActionsColumn &&
                                 actionColumnPosition === "left" && (
                                     <th className="select-none px-4 sm:px-6 lg:px-8 py-4 sm:py-5 lg:py-6 border titleColumn whitespace-nowrap">
-                                        <span className="hidden sm:inline">ACCIONES</span>
+                                        <span className="hidden sm:inline">
+                                            ACCIONES
+                                        </span>
                                         <span className="sm:hidden">ACT</span>
                                     </th>
                                 )}
@@ -119,14 +125,18 @@ export const Table = ({
                                     className="select-none px-4 sm:px-6 lg:px-8 py-4 sm:py-5 lg:py-6 border titleColumn relative group whitespace-nowrap"
                                     data-label={col.component?.name || col.name}
                                 >
-                                    <span>{col.component?.name || col.name}</span>
+                                    <span>
+                                        {col.component?.name || col.name}
+                                    </span>
                                 </th>
                             ))}
 
                             {showActionsColumn &&
                                 actionColumnPosition === "right" && (
                                     <th className="select-none px-4 sm:px-6 lg:px-8 py-4 sm:py-5 lg:py-6 border titleColumn whitespace-nowrap">
-                                        <span className="hidden sm:inline">ACCIONES</span>
+                                        <span className="hidden sm:inline">
+                                            ACCIONES
+                                        </span>
                                         <span className="sm:hidden">ACT</span>
                                     </th>
                                 )}
@@ -134,7 +144,10 @@ export const Table = ({
                     </thead>
                     <tbody className="text-center">
                         {rows.map((row, rowIdx) => (
-                            <tr key={rowIdx} className="hover:bg-gray-50 transition-colors">
+                            <tr
+                                key={rowIdx}
+                                className="hover:bg-gray-50 transition-colors"
+                            >
                                 {showActionsColumn &&
                                     actionColumnPosition === "left" && (
                                         <td className="px-3 sm:px-4 lg:px-4 py-2 sm:py-3 text-ms textCell border" />
@@ -143,7 +156,9 @@ export const Table = ({
                                     <td
                                         key={col.key}
                                         className="px-3 sm:px-4 lg:px-4 py-2 sm:py-3 text-ms textCell border cursor-pointer"
-                                        data-label={col.component?.name || col.name}
+                                        data-label={
+                                            col.component?.name || col.name
+                                        }
                                     >
                                         <span>{renderCell(row, col)}</span>
                                     </td>
@@ -166,7 +181,9 @@ export const Table = ({
                         onClick={() => goToPage(currentPage - 1)}
                         disabled={loading || currentPage === 1}
                         className={`relative inline-flex items-center px-2 py-2 rounded-xl hover:bg-gray-50 focus:z-20 focus:outline-offset-0 ${
-                            currentPage === 1 ? "text-[#8A9099]" : "text-[#304FFD] bg-[#e4e7f9]"
+                            currentPage === 1
+                                ? "text-[#8A9099]"
+                                : "text-[#304FFD] bg-[#e4e7f9]"
                         }`}
                     >
                         Anterior
@@ -192,7 +209,9 @@ export const Table = ({
                             <select
                                 className="mr-4 py-3 px-4 ps-3 text-[15px] rounded-2xl text-[#8A9099] border border-[#E8E9EB] min-w-16"
                                 value={rowsPerPage}
-                                onChange={(e) => onRowsPerPageChange(Number(e.target.value))}
+                                onChange={(e) =>
+                                    onRowsPerPageChange(Number(e.target.value))
+                                }
                                 disabled={loading}
                             >
                                 <option value={5}>5</option>
@@ -204,14 +223,23 @@ export const Table = ({
                             </select>
 
                             <p className="text-[15px] text-[#8A9099]">
-                                <span className="font-medium">{startIndex}</span> -
-                                <span className="font-medium"> {endIndex}</span> de
-                                <span className="font-medium"> {safeTotalCount}</span>
+                                <span className="font-medium">
+                                    {startIndex}
+                                </span>{" "}
+                                -
+                                <span className="font-medium"> {endIndex}</span>{" "}
+                                de
+                                <span className="font-medium">
+                                    {" "}
+                                    {safeTotalCount}
+                                </span>
                             </p>
                         </div>
                     ) : (
                         <div>
-                            <p className="text-[15px] text-[#8A9099]">No hay resultados que mostrar</p>
+                            <p className="text-[15px] text-[#8A9099]">
+                                No hay resultados que mostrar
+                            </p>
                         </div>
                     )}
 
@@ -226,12 +254,15 @@ export const Table = ({
                                     onClick={() => goToPage(1)}
                                     disabled={loading || currentPage === 1}
                                     className={`relative inline-flex items-center px-2 py-2 rounded-xl hover:bg-gray-50 ${
-                                        currentPage === 1 ? "text-[#8A9099]" : "text-[#304FFD] bg-[#e4e7f9]"
+                                        currentPage === 1
+                                            ? "text-[#8A9099]"
+                                            : "text-[#304FFD] bg-[#e4e7f9] cursor-pointer"
                                     }`}
                                 >
-                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
-                                    </svg>
+                                    <Icon
+                                        name="chevrons-left"
+                                        className="w-4 h-4"
+                                    />
                                 </button>
 
                                 <button
@@ -239,17 +270,23 @@ export const Table = ({
                                     onClick={() => goToPage(currentPage - 1)}
                                     disabled={loading || currentPage === 1}
                                     className={`relative inline-flex items-center px-2 py-2 rounded-xl hover:bg-gray-50 ${
-                                        currentPage === 1 ? "text-[#8A9099]" : "text-[#304FFD] bg-[#e4e7f9]"
+                                        currentPage === 1
+                                            ? "text-[#8A9099]"
+                                            : "text-[#304FFD] bg-[#e4e7f9] cursor-pointer"
                                     }`}
                                 >
-                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                                    </svg>
+                                    <Icon
+                                        name="chevron-left"
+                                        className="w-4 h-4"
+                                    />
                                 </button>
 
                                 {pageItems.map((page, idx) =>
                                     page === "..." ? (
-                                        <span key={`ellipsis-${idx}`} className="px-1 py-2">
+                                        <span
+                                            key={`ellipsis-${idx}`}
+                                            className="px-1 py-2"
+                                        >
                                             ...
                                         </span>
                                     ) : (
@@ -258,10 +295,10 @@ export const Table = ({
                                             type="button"
                                             onClick={() => goToPage(page)}
                                             disabled={loading}
-                                            className={`relative inline-flex items-center px-4 py-2 text-[15px] font-normal rounded-xl ${
+                                            className={`relative inline-flex items-center px-4 py-2 text-[15px] font-normal rounded-xl focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600  ${
                                                 currentPage === page
                                                     ? "bg-[#304FFD] text-white"
-                                                    : "text-[#3F434A]"
+                                                    : "text-[#3F434A] cursor-pointer"
                                             }`}
                                         >
                                             {page}
@@ -272,31 +309,37 @@ export const Table = ({
                                 <button
                                     type="button"
                                     onClick={() => goToPage(currentPage + 1)}
-                                    disabled={loading || currentPage === totalPages}
+                                    disabled={
+                                        loading || currentPage === totalPages
+                                    }
                                     className={`relative inline-flex items-center px-2 py-2 rounded-xl hover:bg-gray-50 ${
                                         currentPage === totalPages
                                             ? "text-[#8A9099]"
-                                            : "text-[#304FFD] bg-[#e4e7f9]"
+                                            : "text-[#304FFD] bg-[#e4e7f9] cursor-pointer"
                                     }`}
                                 >
-                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                                    </svg>
+                                    <Icon
+                                        name="chevron-right"
+                                        className="w-4 h-4"
+                                    />
                                 </button>
 
                                 <button
                                     type="button"
                                     onClick={() => goToPage(totalPages)}
-                                    disabled={loading || currentPage === totalPages}
+                                    disabled={
+                                        loading || currentPage === totalPages
+                                    }
                                     className={`relative inline-flex items-center px-2 py-2 rounded-xl hover:bg-gray-50 ${
                                         currentPage === totalPages
                                             ? "text-[#8A9099]"
-                                            : "text-[#304FFD] bg-[#e4e7f9]"
+                                            : "text-[#304FFD] bg-[#e4e7f9] cursor-pointer"
                                     }`}
                                 >
-                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 5l7 7-7 7M5 5l7 7-7 7" />
-                                    </svg>
+                                    <Icon
+                                        name="chevrons-right"
+                                        className="w-4 h-4"
+                                    />
                                 </button>
                             </nav>
                         </div>
