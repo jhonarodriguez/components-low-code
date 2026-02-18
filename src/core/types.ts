@@ -63,19 +63,63 @@ export type ColumnField = {
 
 export type ActionColumnPosition = "left" | "right";
 
+export type ValidationOperator =
+  | "equals"
+  | "notEquals"
+  | "contains"
+  | "notContains"
+  | "greaterThan"
+  | "greaterThanOrEqual"
+  | "lessThan"
+  | "lessThanOrEqual"
+  | "existProperty"
+  | "noExistProperty"
+  | "notEqualsAnyRow";
+
+export interface ButtonValidation {
+  field: string;
+  value: unknown;
+  operator: ValidationOperator;
+  expectedValue?: unknown;
+  useValueTemplate?: boolean;
+  fieldRow?: string;
+}
+
+export interface BtnActionConfig {
+  key: string;
+  name?: string;
+  icon?: string;
+  actionType: string;
+  type?: string;
+  textTooltip?: string;
+  positionTooltip?: string;
+  customClass?: string;
+  hidden?: string;
+  fieldsToUpdate?: Record<string, unknown>;
+  textConfirmModal?: string;
+  titleModal?: string;
+  textBtnModal?: string;
+  validations?: ButtonValidation[];
+}
+
 export interface Actions {
   position?: ActionColumnPosition;
   pagination?: boolean;
+  create?: boolean;
+  edit?: boolean;
+  delete?: boolean;
 }
 
 export interface TableSettings extends Component {
   fields?: ColumnField[];
   actions?: Actions;
   rowsPerPage?: number;
+  btnsActionsTable?: BtnActionConfig[];
+  permissions?: string[];
 }
 
 export interface BoardSettings extends TableSettings {
-  api?: Dictionary<any>;
+  api?: Dictionary<unknown>;
   dataAccess: string;
   moduleId: string;
-};
+}

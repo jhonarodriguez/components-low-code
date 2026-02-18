@@ -18,6 +18,7 @@ import {
     PlusIcon,
     DragIcon,
     OptionsIcon,
+    PensilIcon,
 } from './definitions/actionIcons';
 
 const ICON_REGISTRY = {
@@ -37,6 +38,7 @@ const ICON_REGISTRY = {
     'plus': PlusIcon,
     'drag': DragIcon,
     'options': OptionsIcon,
+    'pensil': PensilIcon,
 } as const satisfies Record<string, IconComponent>;
 
 export type IconName = keyof typeof ICON_REGISTRY;

@@ -1,22 +1,33 @@
 import React, { useMemo } from "react";
 import {
     ActionColumnPosition,
+    BtnActionConfig,
     ColumnField,
     TableSettings,
 } from "../../../core/types";
+import {
+    ButtonVisibilityEvaluator,
+    createButtonVisibilityEvaluator,
+} from "../../../core/validation";
 import { Icon } from "../ui/icons";
+import { ActionButtonsCell } from "./ActionButtonsCell";
 
 import "../../../styles/components/_tables.scss";
 
 interface TableProps {
     settings: TableSettings;
-    rows: any[];
+    rows: Record<string, unknown>[];
     loading: boolean;
     totalCount: number;
     currentPage: number;
     rowsPerPage: number;
     onPageChange: (page: number) => void;
     onRowsPerPageChange: (size: number) => void;
+    onAction?: (
+        actionType: string,
+        row: Record<string, unknown>,
+        config: BtnActionConfig,
+    ) => void;
 }
 
 function resolveActionColumnPosition(
@@ -68,6 +79,7 @@ export const Table = ({
     rowsPerPage,
     onPageChange,
     onRowsPerPageChange,
+    onAction,
 }: TableProps) => {
     const columns = useMemo(() => {
         return (settings.fields?.filter((f) => f.active !== false) ?? []).sort(
@@ -81,6 +93,23 @@ export const Table = ({
     );
 
     const showActionsColumn = actionColumnPosition !== null;
+
+    const btnsActionsTable = settings.btnsActionsTable ?? [];
+    const permissions = settings.permissions ?? [];
+    const actions = (settings.actions ?? {}) as Record<string, unknown>;
+
+    const evaluator = useMemo<ButtonVisibilityEvaluator>(
+        () => createButtonVisibilityEvaluator(),
+        [],
+    );
+
+    const handleAction = (
+        actionType: string,
+        row: Record<string, unknown>,
+        config: BtnActionConfig,
+    ) => {
+        onAction?.(actionType, row, config);
+    };
 
     const totalPages = Math.max(1, Math.ceil((totalCount || 0) / rowsPerPage));
     const safeTotalCount = Math.max(0, totalCount || 0);
@@ -104,7 +133,6 @@ export const Table = ({
 
     return (
         <>
-            {/* Contenedor de tabla con scroll horizontal para móviles */}
             <div className="table-container table-cards-mode">
                 <table className="w-full">
                     <thead>
@@ -150,7 +178,17 @@ export const Table = ({
                             >
                                 {showActionsColumn &&
                                     actionColumnPosition === "left" && (
-                                        <td className="px-3 sm:px-4 lg:px-4 py-2 sm:py-3 text-ms textCell border" />
+                                        <td className="px-3 sm:px-4 lg:px-4 py-2 sm:py-3 text-ms textCell border">
+                                            <ActionButtonsCell
+                                                buttons={btnsActionsTable}
+                                                row={row}
+                                                permissions={permissions}
+                                                actions={actions}
+                                                rows={rows}
+                                                evaluator={evaluator}
+                                                onAction={handleAction}
+                                            />
+                                        </td>
                                     )}
                                 {columns.map((col, colIdx) => (
                                     <td
@@ -166,7 +204,17 @@ export const Table = ({
 
                                 {showActionsColumn &&
                                     actionColumnPosition === "right" && (
-                                        <td className="px-3 sm:px-4 lg:px-4 py-2 sm:py-3 text-ms textCell border" />
+                                        <td className="px-3 sm:px-4 lg:px-4 py-2 sm:py-3 text-ms textCell border">
+                                            <ActionButtonsCell
+                                                buttons={btnsActionsTable}
+                                                row={row}
+                                                permissions={permissions}
+                                                actions={actions}
+                                                rows={rows}
+                                                evaluator={evaluator}
+                                                onAction={handleAction}
+                                            />
+                                        </td>
                                     )}
                             </tr>
                         ))}
@@ -350,11 +398,10 @@ export const Table = ({
     );
 };
 
-function renderCell(row: any, column: ColumnField): React.ReactNode {
+function renderCell(row: Record<string, unknown>, column: ColumnField): React.ReactNode {
     const key = column?.component?.key || column.key;
     const value = key ? row?.[key] : "";
 
-    // Por ahora solo texto
     if (value === null || value === undefined) return "-";
     if (typeof value === "object") return JSON.stringify(value);
     return String(value);
