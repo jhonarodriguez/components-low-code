@@ -1,6 +1,6 @@
-export type Dictionary<T = any> = Record<string, T>;
+export type Dictionary<T = unknown> = Record<string, T>;
 
-interface Parameter {
+export interface Parameter {
   key: string;
   value: string;
 }
@@ -19,13 +19,13 @@ export interface EncryptedPayload {
   readonly crypto: string;
 }
 
-interface ContextPath {
+export interface ContextPath {
   path: string;
   method: string;
   params: Parameter[];
 }
 
-type Datasource = {
+export type Datasource = {
   name: string;
   baseUrl: string;
   create: ContextPath;
@@ -36,7 +36,7 @@ type Datasource = {
   contextPath: string;
   headers: Parameter[];
   endpoint?: string;
-  queryParam?: any;
+  queryParam?: unknown;
 }
 
 type Component = {
@@ -55,13 +55,43 @@ export type ColumnField = {
     name: string;
     type: string;
   };
+  id?: boolean;
+  hidden?: boolean;
   type?: string;
   editable?: boolean;
   active?: boolean;
   order?: number;
 };
 
+export interface FormFieldDefinition {
+  key: string;
+  name: string;
+  type: string;
+  required?: boolean;
+}
+
+export interface FormSettings {
+  name?: string;
+  fields: FormFieldDefinition[];
+  textSendBtn?: string;
+  hiddenSubmit?: boolean;
+  showCancel?: boolean;
+}
+
+export interface FormSubmitPayload {
+  data: Record<string, unknown>;
+}
+
 export type ActionColumnPosition = "left" | "right";
+export type ModalSize = "small" | "medium" | "large" | "fullscreen" | "auto";
+
+export interface ModalSettings {
+  open?: boolean;
+  title?: string;
+  description?: string;
+  loading?: boolean;
+  size?: ModalSize;
+}
 
 export type ValidationOperator =
   | "equals"
@@ -110,12 +140,19 @@ export interface Actions {
   delete?: boolean;
 }
 
+export interface ButtonsNameSettings {
+  icon?: string;
+  create?: string;
+}
+
 export interface TableSettings extends Component {
   fields?: ColumnField[];
   actions?: Actions;
   rowsPerPage?: number;
   btnsActionsTable?: BtnActionConfig[];
   permissions?: string[];
+  textSendBtn?: string;
+  buttonsName?: ButtonsNameSettings;
 }
 
 export interface BoardSettings extends TableSettings {

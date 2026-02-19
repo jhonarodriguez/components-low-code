@@ -11,7 +11,7 @@ interface ButtonProps {
     onClick: () => void;
 }
 
-const BASE_CLASS = "flex items-center relative cursor-pointer";
+const BASE_CLASS = "flex items-center relative";
 
 const DEFAULT_ICON_CLASS =
     "text-[#595F69] group-hover:text-[#F8F8F8] stroke-2 w-4";
@@ -36,7 +36,7 @@ export const Button: React.FC<ButtonProps> = ({
     return (
         <button
             type="button"
-            className={`${resolvedClass} ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}
+            className={`${resolvedClass} ${disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
             onClick={handleClick}
             disabled={disabled || loading}
         >

@@ -82,7 +82,16 @@ export const Table = ({
     onAction,
 }: TableProps) => {
     const columns = useMemo(() => {
-        return (settings.fields?.filter((f) => f.active !== false) ?? []).sort(
+        const validField = (f: ColumnField) => {
+            return (
+                f.active !== false &&
+                !f.id &&
+                f.key !== "default-value" &&
+                !f.hidden
+            );
+        };
+
+        return (settings.fields?.filter(validField) ?? []).sort(
             (a, b) => (a?.order ?? 0) - (b?.order ?? 0),
         );
     }, [settings.fields]);
@@ -398,7 +407,10 @@ export const Table = ({
     );
 };
 
-function renderCell(row: Record<string, unknown>, column: ColumnField): React.ReactNode {
+function renderCell(
+    row: Record<string, unknown>,
+    column: ColumnField,
+): React.ReactNode {
     const key = column?.component?.key || column.key;
     const value = key ? row?.[key] : "";
 

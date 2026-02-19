@@ -19,7 +19,11 @@ class GcBoard extends HTMLElement {
 
   private render() {
     if (!this.root) return;
-    this.root.render(<Board settings={this.settings ?? {}} />);
+    if (!this.settings) {
+      this.root.render(null);
+      return;
+    }
+    this.root.render(<Board settings={this.settings} />);
   }
 
   disconnectedCallback() {
