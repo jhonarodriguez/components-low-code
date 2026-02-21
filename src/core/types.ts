@@ -1,4 +1,5 @@
 export type Dictionary<T = unknown> = Record<string, T>;
+export type BooleanLike = boolean | "true" | "false";
 
 export interface Parameter {
   key: string;
@@ -51,9 +52,15 @@ export type ColumnField = {
   name?: string;
   label?: string;
   component?: {
-    key: string;
-    name: string;
-    type: string;
+    key?: string;
+    name?: string;
+    type?: string;
+    placeholder?: string;
+    disabled?: BooleanLike;
+    readOnly?: BooleanLike;
+    inputType?: string;
+    rows?: number | string;
+    [key: string]: unknown;
   };
   id?: boolean;
   hidden?: boolean;
@@ -68,6 +75,17 @@ export interface FormFieldDefinition {
   name: string;
   type: string;
   required?: boolean;
+  label?: string;
+  placeholder?: string;
+  disabled?: BooleanLike;
+  readOnly?: BooleanLike;
+  inputType?: string;
+  rows?: number;
+}
+
+export interface FormFieldValueChange {
+  id: string;
+  value: unknown;
 }
 
 export interface FormSettings {
@@ -159,4 +177,10 @@ export interface BoardSettings extends TableSettings {
   api?: Dictionary<unknown>;
   dataAccess: string;
   moduleId: string;
+}
+
+export interface FieldComponentProps {
+    field: FormFieldDefinition;
+    value: unknown;
+    onValueChange: (change: FormFieldValueChange) => void;
 }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { Board } from "../render/components/board/Board";
 import { BoardSettings } from "../core/types";
@@ -23,7 +23,11 @@ class GcBoard extends HTMLElement {
       this.root.render(null);
       return;
     }
-    this.root.render(<Board settings={this.settings} />);
+    this.root.render(
+      <StrictMode>
+        <Board settings={this.settings} />
+      </StrictMode>
+    );
   }
 
   disconnectedCallback() {

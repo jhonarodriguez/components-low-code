@@ -1,9 +1,16 @@
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
-    FormFieldDefinition,
+    FormFieldValueChange,
     FormSettings,
     FormSubmitPayload,
 } from "../../../core/types";
+import {
+    ComponentProcessingSettings,
+    ComponentProcessor,
+    ComponentRendererContext,
+    RenderableComponent,
+    createDefaultComponentRendererRegistry,
+} from "../../registry";
 import { Button } from "../ui/button";
 
 interface FormProps {
@@ -13,24 +20,66 @@ interface FormProps {
     onCancel: () => void;
 }
 
-function resolveFieldTitle(field: FormFieldDefinition): string {
-    return field.name || field.key;
-}
-
 export const Form: React.FC<FormProps> = ({
     settings,
     data = {},
     onSubmit,
     onCancel,
 }) => {
-    const activeFields = useMemo(
-        () => settings.fields.filter((field) => field.key),
+    const [formData, setFormData] = useState<Record<string, unknown>>({ ...data });
+
+    useEffect(() => {
+        setFormData({ ...data });
+    }, [data]);
+
+    const componentProcessor = useMemo(() => new ComponentProcessor(), []);
+    const rendererRegistry = useMemo(
+        () => createDefaultComponentRendererRegistry(),
+        [],
+    );
+
+    const activeFields = useMemo<RenderableComponent[]>(
+        () =>
+            settings.fields
+                .filter((field) => field.key)
+                .map((field) => ({ ...field })),
         [settings.fields],
     );
 
+    const handleValueChange = useCallback((change: FormFieldValueChange) => {
+        setFormData((previous) => ({
+            ...previous,
+            [change.id]: change.value,
+        }));
+    }, []);
+
+    const getValue = useCallback(
+        (key: string) => formData[key],
+        [formData],
+    );
+
+    const processingSettings = useMemo<ComponentProcessingSettings>(
+        () => ({
+            mode: "creation",
+        }),
+        [],
+    );
+
+    const rendererContext = useMemo<ComponentRendererContext>(
+        () => ({
+            data: formData,
+            context: {},
+            disabledAllForm: false,
+            loading: false,
+            getValue,
+            valueChange: handleValueChange,
+        }),
+        [formData, getValue, handleValueChange],
+    );
+
     const submit = useCallback(() => {
-        onSubmit({ data: { ...data } });
-    }, [data, onSubmit]);
+        onSubmit({ data: { ...formData } });
+    }, [formData, onSubmit]);
 
     return (
         <form
@@ -40,30 +89,35 @@ export const Form: React.FC<FormProps> = ({
                 submit();
             }}
         >
-            <div className="w-full">
+            <div className="w-full p-4">
                 <h3 className="text-xl font-semibold text-gray-900 mb-4">
-                    {settings.name ?? "Formulario"}
+                    {settings.name}
                 </h3>
 
                 <div className="flex flex-col gap-3">
                     {activeFields.length > 0 ? (
-                        activeFields.map((field) => (
-                            <div
-                                key={field.key}
-                                className="rounded-lg border border-[#E8E9EB] bg-[#F8F8F8] p-3"
-                            >
-                                <p className="text-sm font-medium text-[#3F434A]">
-                                    {resolveFieldTitle(field)}
-                                </p>
-                                <p className="text-xs text-[#8A9099] mt-1">
-                                    Componente{" "}
-                                    <span className="font-medium">
-                                        {field.type || "input"}
-                                    </span>{" "}
-                                    pendiente de migrar
-                                </p>
-                            </div>
-                        ))
+                        activeFields.map((field) => {
+                            const processed = componentProcessor.process(
+                                { ...field },
+                                processingSettings,
+                                false,
+                            );
+
+                            if (!componentProcessor.isRenderable(processed)) {
+                                return null;
+                            }
+
+                            const renderedField = rendererRegistry.render(
+                                processed,
+                                rendererContext,
+                            );
+
+                            return (
+                                <div key={field.key}>
+                                    {renderedField}
+                                </div>
+                            );
+                        })
                     ) : (
                         <div className="rounded-lg border border-[#E8E9EB] bg-[#F8F8F8] p-3 text-sm text-[#8A9099]">
                             No hay componentes configurados para este formulario.

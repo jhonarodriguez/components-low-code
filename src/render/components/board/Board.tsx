@@ -13,6 +13,26 @@ import { Button } from "../ui/button";
 import { Modal } from "../modal";
 import { Form } from "../form";
 
+function normalizeBooleanLike(value: unknown): "true" | "false" | boolean | undefined {
+    if (value === true || value === false || value === "true" || value === "false") {
+        return value;
+    }
+    return undefined;
+}
+
+function normalizeRows(value: unknown): number | undefined {
+    if (typeof value === "number" && Number.isFinite(value) && value > 0) {
+        return value;
+    }
+
+    if (typeof value === "string") {
+        const parsed = Number(value);
+        if (Number.isFinite(parsed) && parsed > 0) return parsed;
+    }
+
+    return undefined;
+}
+
 function mapFieldsToForm(fields: BoardSettings["fields"]): FormFieldDefinition[] {
     if (!fields) return [];
 
@@ -20,10 +40,28 @@ function mapFieldsToForm(fields: BoardSettings["fields"]): FormFieldDefinition[]
         .filter((field) => field.active !== false)
         .sort((a, b) => (a?.order ?? 0) - (b?.order ?? 0))
         .map((field, index) => {
-            const key = field.component?.key || field.key || `field_${index}`;
-            const name = field.component?.name || field.name || key;
-            const type = field.component?.type || field.type || "input";
-            return { key, name, type };
+            const component = field.component ?? {};
+            const key = component.key || field.key || `field_${index}`;
+            const name = component.name || field.name || key;
+            const type = component.type || field.type || '';
+
+            return {
+                key,
+                name,
+                type,
+                label: field.label || component.name || name,
+                placeholder:
+                    typeof component.placeholder === "string"
+                        ? component.placeholder
+                        : undefined,
+                disabled: normalizeBooleanLike(component.disabled),
+                readOnly: normalizeBooleanLike(component.readOnly),
+                inputType:
+                    typeof component.inputType === "string"
+                        ? component.inputType
+                        : undefined,
+                rows: normalizeRows(component.rows),
+            };
         });
 }
 
@@ -74,7 +112,6 @@ export function Board({ settings }: { settings: BoardSettings }) {
 
     const formSettings = useMemo<FormSettings>(
         () => ({
-            name: settings.name,
             fields: mapFieldsToForm(settings.fields),
             textSendBtn: settings.textSendBtn,
             showCancel: true,
@@ -165,7 +202,7 @@ export function Board({ settings }: { settings: BoardSettings }) {
             <Modal
                 open={createModalOpen}
                 title={`Creación ${settings.name ?? ""}`.trim()}
-                size="auto"
+                size="small"
                 onClose={handleCloseCreate}
             >
                 <Form
