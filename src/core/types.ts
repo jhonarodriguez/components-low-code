@@ -186,6 +186,8 @@ export interface SchemaField {
 export type Constraint = {
   name: string;
   value: string;
+  targetField?: string;
+  targetFieldName?: string;
 }
 
 export interface ValidationError {

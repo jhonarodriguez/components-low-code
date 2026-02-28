@@ -11,5 +11,5 @@ export interface IValidatorStrategy {
         fieldKey: string,
         data: Record<string, unknown>,
         fieldAlias: string
-    ): ValidationError;
+    ): ValidationError[];
 }
