@@ -1,10 +1,9 @@
-import { BooleanLike, FormFieldDefinition } from "../../../core/types";
+import { BooleanLike, Field } from "../../../core/types";
 
-export interface RenderableComponent extends FormFieldDefinition {
+export interface RenderableComponent extends Field {
     active?: boolean | "true" | "false";
     disabledAllForm?: boolean;
     permissions?: unknown;
-    datasource?: unknown;
     moduleId?: unknown;
     schema?: unknown;
     mode?: string;

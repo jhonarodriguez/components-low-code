@@ -1,4 +1,4 @@
-# GControl Components React
+# Components LowCode
 
 Libreria React empaquetada como **Web Component** (`<gc-board>`) para renderizar tableros/tablas configurables desde un objeto JSON (DSL).
 

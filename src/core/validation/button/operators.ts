@@ -1,4 +1,4 @@
-import { ValidationOperator } from "../types";
+import { ValidationOperator } from "../../types";
 
 type OperatorFn = (
   dataValue: unknown,

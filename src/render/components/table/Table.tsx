@@ -8,7 +8,7 @@ import {
 import {
     ButtonVisibilityEvaluator,
     createButtonVisibilityEvaluator,
-} from "../../../core/validation";
+} from "../../../core/validation/button";
 import { Icon } from "../ui/icons";
 import { ActionButtonsCell } from "./ActionButtonsCell";
 

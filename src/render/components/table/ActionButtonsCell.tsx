@@ -3,7 +3,7 @@ import { BtnActionConfig } from "../../../core/types";
 import {
     ButtonVisibilityEvaluator,
     VisibilityContext,
-} from "../../../core/validation";
+} from "../../../core/validation/button";
 import { Button } from "../ui/button";
 
 export interface ActionButtonsCellProps {

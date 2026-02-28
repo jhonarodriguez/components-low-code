@@ -1,4 +1,4 @@
-import { FormFieldValueChange } from "../../../core/types";
+import { ValueChange } from "../../../core/types";
 
 export interface ComponentRendererContext {
     data: Record<string, unknown>;
@@ -7,7 +7,7 @@ export interface ComponentRendererContext {
     disabledAllForm: boolean;
     loading?: boolean;
     getValue: (key: string) => unknown;
-    valueChange: (change: FormFieldValueChange) => void;
+    valueChange: (change: ValueChange) => void;
     handleActions?: (event: unknown) => void;
     handlerClickRowComments?: (event: unknown) => void;
     handleAdd?: (event: unknown) => void;

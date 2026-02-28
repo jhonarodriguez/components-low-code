@@ -47,34 +47,7 @@ type Component = {
   datasource: Datasource;
 }
 
-export type ColumnField = {
-  key?: string;
-  name?: string;
-  label?: string;
-  component?: {
-    key?: string;
-    name?: string;
-    type?: string;
-    placeholder?: string;
-    disabled?: BooleanLike;
-    readOnly?: BooleanLike;
-    inputType?: string;
-    rows?: number | string;
-    [key: string]: unknown;
-  };
-  id?: boolean;
-  hidden?: boolean;
-  type?: string;
-  editable?: boolean;
-  active?: boolean;
-  order?: number;
-};
-
-export interface FormFieldDefinition {
-  key: string;
-  name: string;
-  type: string;
-  required?: boolean;
+export interface Field extends Component {
   label?: string;
   placeholder?: string;
   disabled?: BooleanLike;
@@ -83,14 +56,27 @@ export interface FormFieldDefinition {
   rows?: number;
 }
 
-export interface FormFieldValueChange {
+export type ColumnField = {
+  key?: string;
+  name?: string;
+  label?: string;
+  component?: Field;
+  id?: boolean;
+  hidden?: boolean;
+  type?: string;
+  editable?: boolean;
+  active?: boolean;
+  order?: number;
+};
+
+export interface ValueChange {
   id: string;
   value: unknown;
 }
 
 export interface FormSettings {
   name?: string;
-  fields: FormFieldDefinition[];
+  fields: Field[];
   textSendBtn?: string;
   hiddenSubmit?: boolean;
   showCancel?: boolean;
@@ -180,7 +166,7 @@ export interface BoardSettings extends TableSettings {
 }
 
 export interface FieldComponentProps {
-    field: FormFieldDefinition;
+    field: Field;
     value: unknown;
-    onValueChange: (change: FormFieldValueChange) => void;
+    onValueChange: (change: ValueChange) => void;
 }

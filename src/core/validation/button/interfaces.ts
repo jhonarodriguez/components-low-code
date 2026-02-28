@@ -1,4 +1,4 @@
-import { BtnActionConfig } from "../types";
+import { BtnActionConfig } from "../../types";
 
 export interface VisibilityContext {
   row: Record<string, unknown>;

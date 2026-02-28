@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
-    FormFieldValueChange,
+    ValueChange,
     FormSettings,
     FormSubmitPayload,
 } from "../../../core/types";
@@ -46,7 +46,7 @@ export const Form: React.FC<FormProps> = ({
         [settings.fields],
     );
 
-    const handleValueChange = useCallback((change: FormFieldValueChange) => {
+    const handleValueChange = useCallback((change: ValueChange) => {
         setFormData((previous) => ({
             ...previous,
             [change.id]: change.value,

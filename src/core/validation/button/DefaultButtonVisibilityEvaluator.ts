@@ -1,4 +1,4 @@
-import { BtnActionConfig, ButtonValidation } from "../types";
+import { BtnActionConfig, ButtonValidation } from "../../types";
 import { ButtonVisibilityEvaluator, VisibilityContext } from "./interfaces";
 import { getOperator, getNestedValueFromObject } from "./operators";
 
