@@ -112,10 +112,15 @@ export function Board({ settings }: { settings: BoardSettings }) {
 
     const formSettings = useMemo<FormSettings>(
         () => ({
+            key: `${settings.moduleId}-form`,
+            name: settings.name ?? "",
+            type: "form",
+            datasource: settings.datasource,
             fields: mapFieldsToForm(settings.fields),
             textSendBtn: settings.textSendBtn,
             showCancel: true,
             hiddenSubmit: false,
+            schema: settings.schema
         }),
         [settings],
     );

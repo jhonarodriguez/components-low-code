@@ -12,6 +12,7 @@ import {
     createDefaultComponentRendererRegistry,
 } from "../../registry";
 import { Button } from "../ui/button";
+import { CreateSchemaValidator } from "../../../core/validation/schema/factory";
 
 interface FormProps {
     settings: FormSettings;
@@ -78,8 +79,16 @@ export const Form: React.FC<FormProps> = ({
     );
 
     const submit = useCallback(() => {
+        const valid = dataValidator.validate(formData, settings.schema)
+
+        if(!valid.isValid){
+            return;
+        }
+
         onSubmit({ data: { ...formData } });
     }, [formData, onSubmit]);
+
+    const dataValidator = useMemo(() => CreateSchemaValidator(), []);
 
     return (
         <form

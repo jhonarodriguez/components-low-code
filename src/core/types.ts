@@ -45,6 +45,7 @@ type Component = {
   name: string;
   type: string;
   datasource: Datasource;
+  schema: Schema
 }
 
 export interface Field extends Component {
@@ -74,8 +75,7 @@ export interface ValueChange {
   value: unknown;
 }
 
-export interface FormSettings {
-  name?: string;
+export interface FormSettings extends Component {
   fields: Field[];
   textSendBtn?: string;
   hiddenSubmit?: boolean;
@@ -186,8 +186,8 @@ export interface SchemaField {
 export type Constraint = {
   name: string;
   value: string;
-  targetField?: string;
-  targetFieldName?: string;
+  targetField: string;
+  targetFieldName: string;
 }
 
 export interface ValidationError {
