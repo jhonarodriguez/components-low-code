@@ -166,7 +166,35 @@ export interface BoardSettings extends TableSettings {
 }
 
 export interface FieldComponentProps {
-    field: Field;
-    value: unknown;
-    onValueChange: (change: ValueChange) => void;
+  field: Field;
+  value: unknown;
+  onValueChange: (change: ValueChange) => void;
+}
+
+export interface Schema {
+  fields: Record<string, SchemaField>;
+}
+
+export interface SchemaField {
+  cipher: boolean;
+  aliasKey: string;
+  constraints: Constraint[];
+  unique?: boolean;
+  auditLog?: boolean;
+}
+
+export type Constraint = {
+  name: string;
+  value: string;
+}
+
+export interface ValidationError {
+  field: string;
+  message: string;
+  constraint: Constraint;
+}
+
+export interface ValidationDataResult {
+  isValid: boolean;
+  errors: ValidationError[];
 }
