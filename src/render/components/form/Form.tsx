@@ -3,6 +3,7 @@ import {
     ValueChange,
     FormSettings,
     FormSubmitPayload,
+    ValidationError,
 } from "../../../core/types";
 import {
     ComponentProcessingSettings,
@@ -13,6 +14,7 @@ import {
 } from "../../registry";
 import { Button } from "../ui/button";
 import { CreateSchemaValidator } from "../../../core/validation/schema/factory";
+import { ModalErrorSchema } from "../modal/ModalErrorSchema";
 
 interface FormProps {
     settings: FormSettings;
@@ -28,6 +30,10 @@ export const Form: React.FC<FormProps> = ({
     onCancel,
 }) => {
     const [formData, setFormData] = useState<Record<string, unknown>>({ ...data });
+
+    const [errorsModalOpen, setErrorsModalOpen] = useState<boolean>(false);
+
+    const [errorsForm, setErrorsForm] = useState<ValidationError[]>([])
 
     useEffect(() => {
         setFormData({ ...data });
@@ -82,6 +88,8 @@ export const Form: React.FC<FormProps> = ({
         const valid = dataValidator.validate(formData, settings.schema)
 
         if(!valid.isValid){
+            setErrorsForm(valid.errors)
+            setErrorsModalOpen(true);
             return;
         }
 
@@ -89,6 +97,10 @@ export const Form: React.FC<FormProps> = ({
     }, [formData, onSubmit]);
 
     const dataValidator = useMemo(() => CreateSchemaValidator(), []);
+
+    const handleCloseModalErrors = useCallback(() => {
+        setErrorsModalOpen(false);
+    }, [])
 
     return (
         <form
@@ -151,6 +163,11 @@ export const Form: React.FC<FormProps> = ({
                     ) : null}
                 </div>
             </div>
+            <ModalErrorSchema 
+                open={errorsModalOpen}
+                onClose={handleCloseModalErrors}
+                errors={errorsForm}
+            />
         </form>
     );
 };

@@ -1,13 +1,13 @@
 import React, { useEffect } from "react";
 import { ModalSize } from "../../../core/types";
 
-interface ModalProps {
+export interface ModalProps {
     open: boolean;
     title?: string;
     loading?: boolean;
     size?: ModalSize;
     onClose: () => void;
-    children: React.ReactNode;
+    children?: React.ReactNode;
 }
 
 const SIZE_CLASS_MAP: Record<ModalSize, string> = {

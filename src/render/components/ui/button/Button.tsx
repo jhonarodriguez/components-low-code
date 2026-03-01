@@ -11,7 +11,7 @@ interface ButtonProps {
     onClick: () => void;
 }
 
-const BASE_CLASS = "flex items-center relative";
+const BASE_CLASS = "px-4 py-3 h-[40px] text-white bg-[#304FFD] hover:bg-[#263fca] rounded-[12px] shadow-[0_4px_0px_#263fca] flex items-center group relative";
 
 const DEFAULT_ICON_CLASS =
     "text-[#595F69] group-hover:text-[#F8F8F8] stroke-2 w-4";
