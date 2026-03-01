@@ -157,7 +157,6 @@ export const Form: React.FC<FormProps> = ({
                     {!settings.hiddenSubmit ? (
                         <Button
                             text={settings.textSendBtn ?? "Guardar"}
-                            className="px-4 py-3 h-[40px] text-white bg-[#304FFD] hover:bg-[#263fca] rounded-[12px] shadow-[0_4px_0px_#263fca] flex items-center group relative"
                             onClick={submit}
                         />
                     ) : null}
